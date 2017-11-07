@@ -5,10 +5,12 @@
   - like traits
   - specialization fro value types
   - miniboxing
- **Chapter 13**
+  
+**Chapter 13**
   - Visibility (public, protected, private)
   - Scope visibility
-  **Chapter 14**
+  
+**Chapter 14**
   - Parameterized types
   - Variance annotations 
   - type constructors
