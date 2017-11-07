@@ -1,4 +1,4 @@
-# Iteration2- Chpt 12 - 15
+# Iteration4- Chpt 12 - 15
 ### This project is for learning scala from the book _O'Reilly Programming Scala 2nd edition_
 **Chapter 12**
   - Scala.collection
