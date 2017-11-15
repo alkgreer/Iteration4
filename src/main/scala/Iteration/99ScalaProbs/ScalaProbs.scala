@@ -72,5 +72,71 @@ object ScalaProblems {
     }
     println(s"P08: ${compress(duplicates)}")
 
+    // P09 - Pack consecutive duplicates of list elements into sublists.
+    def pack[A](l: List[A]): List[List[A]] = {
+      def _pack(groups: List[List[A]], l: List[A]): List[List[A]] = l match {
+        case Nil  => groups
+        case headElem::tailList if (groups.isEmpty || groups.last.head != headElem) => _pack(groups:::List(List(headElem)), tailList)
+        case headElem::tailList => _pack(groups.init:::List(groups.last:::List(headElem)), tailList)
+      }
+      _pack(Nil, l)
+    }
+    println(s"P09: ${pack(duplicates)}")
+
+    // P10 - Run-length encoding of a list.
+    def encode[A](l: List[A]): List[(Int,A)] = {
+      val packed = pack(l)
+      for (sym <- packed) yield (length(sym), sym.head)
+    }
+    println(s"P10: ${encode(duplicates)}")
+
+    // P12 - Decode a run-length encoded list.
+    def decode[A](l: List[(Int,A)]): List[Any] = {
+      def _expand(n: Int, a: A, group: List[A]): List[A] = n match {
+        case 0 => group
+        case _ => _expand((n-1), a, group:::List(a))
+      }
+      val groups = for (sym <- l) yield _expand(sym._1, sym._2, Nil)
+      flatten(groups)
+    }
+    println(s"P12: ${decode(encode(duplicates))}")
+
+    // P13 - Run-length encoding of a list (direct solution).
+    def encodeDirect[A](l: List[A]): List[(Int,A)] = {
+      def _encode(groups: List[(Int,A)], l: List[A]): List[(Int,A)] = l match {
+        case Nil => groups
+        case headElem::tailList if (groups.isEmpty || groups.last._2 != headElem) => _encode(groups:::List((1,headElem)), tailList)
+        case headElem::tailList => _encode(groups.init:::List(((groups.last._1 + 1),headElem)), tailList)
+      }
+      _encode(Nil, l)
+    }
+    println(s"P10: ${encodeDirect(duplicates)}")
+
+    // P14 - Duplicate the elements of a list.
+    def duplicate[A](l: List[A]): List[Any] = {
+      flatten(for (sym <- l) yield List(sym, sym))
+    }
+    println(s"P14: ${duplicate(charList)}")
+
+    // P15 - Duplicate the elements of a list a given number of times.
+    def duplicateN[A](n: Int, l: List[A]): List[Any] = {
+      def _addN(dups: List[A], n: Int, sym: A): List[A] = n match {
+        case 0 => dups
+        case _ => _addN(sym::dups, (n-1), sym)
+      }
+      flatten(for (sym <- l) yield _addN(Nil, n, sym))
+    }
+    println(s"P15: ${duplicateN(4, charList)}")
+
+    // P16 - Drop every Nth element from a list.
+    def drop[A](n: Int, l: List[A]): List[A] = {
+      def _drop(n: Int, tl: List[A]): List[A] = n match {
+        case 0 => tl.tail
+        case _ => tl.head :: _drop((n-1), tl.tail)
+      }
+      _drop(n, l)
+    }
+    println(s"P16: ${drop(1, charList)}")
+
   }
 }
