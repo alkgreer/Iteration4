@@ -138,5 +138,89 @@ object ScalaProblems {
     }
     println(s"P16: ${drop(1, charList)}")
 
+    // P17 - Split a list into two parts.
+    def split[A](n: Int, l: List[A]): (List[A], List[A]) = {
+      def _split(n: Int, hd: List[A], tl: List[A]): (List[A], List[A]) = n match {
+        case 0 => (hd, tl)
+        case _ => _split((n-1), hd:::List(tl.head), tl.tail)
+      }
+      _split(n, Nil, l)
+    }
+    println(s"P17: ${split(4, numList)}")
+
+    // P18 - Extract a slice from a list.
+    def slice[A](nF: Int, nL: Int, l: List[A]): List[A] = {
+      def _slice(i: Int, slc: List[A]): List[A] = i match {
+        case x if x >= nL => slc
+        case x if x >= nF => _slice((i+1), slc:::List(nth(i, l)))
+        case _            => _slice((i+1), slc)
+      }
+      _slice(0, Nil)
+    }
+    println(s"P18: ${slice(3, 7, numList)}")
+
+    // P19 - Rotate a list N places to the left.
+    def rotate[A](n: Int, l: List[A]): List[A] = {
+      val normN = if (n < 0) { length(l) + n } else { n }
+      def _rotate(i: Int, hd: List[A], tl: List[A]): List[A] = i match {
+        case x if x >= normN  => tl:::hd
+        case _                => _rotate((i+1), hd:::List(tl.head), tl.tail)
+      }
+      _rotate(0, Nil, l)
+    }
+    println(s"P19: ${rotate(-2, numList)}")
+
+    // P20 - Remove the Kth element from a list.
+    def removeAt[A](n: Int, l: List[A]): (List[A], A) = {
+      def _removeAt(i: Int, hd: List[A], tl: List[A]): (List[A], A) = i match {
+        case x if x == n  => (hd:::tl.tail, tl.head)
+        case _            => _removeAt((i+1), hd:::List(tl.head), tl.tail)
+      }
+      _removeAt(0, Nil, l)
+    }
+    println(s"P20: ${removeAt(4, numList)}")
+
+    // P21 - Insert an element at a given position into a list.
+    def insertAt[A](sym: A, n: Int, l: List[A]): List[A] = {
+      def _insertAt(i: Int, hd: List[A], tl: List[A]): List[A] = i match {
+        case x if x == n  => hd:::List(sym):::tl
+        case _            => _insertAt((i+1), hd:::List(tl.head), tl.tail)
+      }
+      _insertAt(0, Nil, l)
+    }
+    println(s"P21: ${insertAt("new", 1, charList)}")
+
+    // P22 - Create a list containing all integers within a given range.
+    def range(nF: Int, nL: Int): List[Int] = {
+      def _range(i: Int, l: List[Int]): List[Int] = i match {
+        case x if x <= nL => _range((i+1), l:::List(i))
+        case _            => l
+      }
+      _range(nF, Nil)
+    }
+    println(s"P22: ${range(4, 9)}")
+
+    // P23 - Extract a given number of randomly selected elements from a list.
+    def randomSelect[A](n: Int, l: List[A]): List[A] = {
+      val r = new util.Random
+      def _randomSelect(i: Int, rands: List[A], l: List[A]): List[A] = i match {
+        case x if x == n  => rands
+        case _            => {
+          val rem = removeAt(r.nextInt(length(l)), l)
+          _randomSelect((i+1), rands:::List(rem._2), rem._1)
+        }
+      }
+      _randomSelect(0, Nil, l)
+    }
+    println(s"P23: ${randomSelect(3, numList)}")
+
+    // P24 - Draw N different random numbers from the set 1..M.
+    def lotto(n: Int, m: Int): List[Int] = {
+      val r = new util.Random
+      val pool = range(1, m)
+      randomSelect(n, pool)
+    }
+    println(s"P24: ${lotto(6, 49)}")
+
   }
 }
