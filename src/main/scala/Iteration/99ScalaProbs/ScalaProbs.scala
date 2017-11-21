@@ -222,5 +222,19 @@ object ScalaProblems {
     }
     println(s"P24: ${lotto(6, 49)}")
 
+    // P25 - Generate a random permutation of the elements of a list.
+    def randomPermute[A](l: List[A]): List[A] = {
+      val r = new util.Random
+      def _randomPermute(oldL: List[A], newL: List[A]): List[A] = oldL match {
+        case Nil  => newL
+        case _    => {
+          val rem = removeAt(r.nextInt(length(oldL)), oldL)
+          _randomPermute(rem._1, newL:::List(rem._2))
+        }
+      }
+      _randomPermute(l, Nil)
+    }
+    println(s"P25: ${randomPermute(numList)}")
+
   }
 }
