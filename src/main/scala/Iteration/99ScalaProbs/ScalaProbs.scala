@@ -1,4 +1,4 @@
-// src/main/scala/Iteration/99ScalaProbs.scala
+// src/main/scala/Iteration/99ScalaProbs/ScalaProbs.scala
 
 object ScalaProblems {
   def main(args: Array[String]) {
