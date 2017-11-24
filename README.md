@@ -4,7 +4,7 @@
   - Scala.collection
   - like traits
   - specialization fro value types
-  - miniboxing
+  - miniboxin
   
 **Chapter 13**
   - Visibility (public, protected, private)
