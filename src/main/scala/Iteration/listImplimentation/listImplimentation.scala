@@ -51,3 +51,44 @@ sealed trait Natural {
 }
 final case object Zero extends Natural
 final case class Succ(c: Natural) extends Natural
+
+object Exercises {
+
+  def add(x: Natural, y: Natural): Natural = x match {
+    case Zero     => y
+    case Succ(x)  => add(x, Succ(y))
+  }
+
+  def sum(is: List[Int]): Int = {
+    def _sum(s: Int, is: List[Int]): Int = is match {
+      case Empty      => s
+      case Cons(h, t) => _sum(s + h, t)
+    }
+    _sum(0, is)
+  }
+
+  def length[A](as: List[A]): Int = {
+    @tailrec def _length(l: Int, as: List[A]): Int = as match {
+      case Empty      => l
+      case Cons(h, t) => _length(l + 1, t)
+    }
+    _length(0, as)
+  }
+
+  def map[A, B](as: List[A], f: A => B): List[B] = {
+    def _map(ms: List[B], as: List[A]): List[B] = as match {
+      case Empty      => Empty
+      case Cons(h, t) => _map(Cons(f(h), ms), t)
+    }
+    _map(Empty, as)
+  }
+
+  def filter[A](as: List[A], f: A => Boolean): List[A] = {
+    def _filter(fs: List[A], as: List[A]): List[A] = as match {
+      case Empty => Empty
+      case Cons(h, t) if f(h) => _filter(Cons(h, fs), t)
+      case Cons(h, t)         => _filter(fs, t)
+    }
+    _filter(Empty, as)
+  }
+}
