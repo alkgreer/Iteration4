@@ -1,3 +1,4 @@
+// src/main/scala/iteration/listimplimentation/listImplimentation
 package listImplimentation
 import scala.annotation.tailrec
 
@@ -25,12 +26,12 @@ object List {
   }
 
   def reduceRight[A](as: List[A], f: (A, A) => A): A = as match {
-    case Empty => error("bzzt. reduceRight on empty list")
+    case Empty => sys.error("bzzt. reduceRight on empty list")
     case Cons(h, t) => foldRight(t, h, f)
   }
 
   def reduceLeft[A](as: List[A], f: (A, A) => A): A = as match {
-    case Empty => error("bzzt. reduceLeft on empty list")
+    case Empty => sys.error("bzzt. reduceLeft on empty list")
     case Cons(h, t) => foldLeft(t, h, f)
   }
 
@@ -91,4 +92,42 @@ object Exercises {
     }
     _filter(Empty, as)
   }
+
+  def append[A](x: List[A], y: List[A]): List[A] = x match {
+    case Empty      => y
+    case Cons(h, t) => Cons(h, append(t, y))
+  }
+
+  def flatten[A](as: List[List[A]]): List[A] = as match {
+    case Empty      => Empty
+    case Cons(h, t) => append(h, flatten(t))
+  }
+
+  def flatMap[A, B](as: List[A], f: A => List[B]): List[B] = as match {
+    case Empty      => Empty
+    case Cons(h, t) => append(f(h), flatMap(t, f))
+  }
+
+  def maximum(is: List[Int]): Int = {
+    def _initialize(is: List[Int]): Int = is match {
+      case Empty      => sys.error("bzzt. Tried 'maximum' on an empty list")
+      case Cons(h, t) => _maximum(t, h)
+    }
+    def _maximum(is: List[Int], max: Int):Int = is match {
+      case Empty => max
+      case Cons(h, t) if h > max  => _maximum(t, h)
+      case Cons(h, t)             => _maximum(t, max)
+    }
+    _initialize(is)
+  }
+
+  def reverse[A](as: List[A]): List[A] = as match {
+    case Empty => Empty
+    case Cons(h, t) if t == Empty => Cons(h, Empty)
+    case Cons(h, t)               => append(reverse(t), Cons(h, Empty))
+  }
+
+    def main(args: Array[String]) {
+      val a = Cons(1,Cons(Nil,List[?]))
+    }
 }
