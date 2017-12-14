@@ -128,6 +128,5 @@ object Exercises {
   }
 
     def main(args: Array[String]) {
-      val a = Cons(1,Cons(Nil,List[?]))
     }
 }
